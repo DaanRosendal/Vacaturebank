@@ -68,7 +68,6 @@ include("header.html"); ?>
 
 
     <?php
-    include("bibliotheek/mailen.php");
     if (isset($_POST["submit"])) {
         $melding = "";
         $naam = htmlspecialchars($_POST["naam"]);

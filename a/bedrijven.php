@@ -8,7 +8,6 @@ include('header.html');
         <h1 class="unselectable mt-2 display-4">Bedrijven</h1>
     </div>
     <?php
-    print_r($_SESSION);
     $sql2 = "SELECT COUNT(*) AS aantal FROM bedrijven";
     $stmt2 = $verbinding->prepare($sql2);
     $stmt2->execute();
@@ -22,7 +21,7 @@ include('header.html');
         <table class="table table-striped table-hover table-sm w-100">
             <thead>
                 <tr>
-                    <th scope="col">BedrijfID</th>
+                    <th scope="col">ID</th>
                     <th scope="col">Naam</th>
                     <th scope="col">Locatie</th>
                     <th scope="col"><i class="fas fa-eye"></i></th>
@@ -46,7 +45,7 @@ include('header.html');
                             <td>" . $r["hq"] . "</td>
                             <td><a href= 'bedrijf.php?id=" . $r["ID"] . "'><i class='far fa-eye'></i></a></td>
                             <td><a href='bdrfBewerk.php?id=" . $r["ID"] . "'><i class='far fa-edit'></i></a></td>
-                            <td><a onclick='return confirm(\"Weet je zeker dat je dit bedrijf wil verwijderen?\")' class='text-danger' href='bdrfDelete.php?ID=" . $r["ID"] . "'><i class='far fa-trash-alt'></i></a></td>
+                            <td><a onclick='return confirm(\"Weet je zeker dat je dit bedrijf wil verwijderen?\")' class='text-danger' href='bdrfDelete.php?id=" . $r["ID"] . "'><i class='far fa-trash-alt'></i></a></td>
                         </tr>
                         ";
                 }

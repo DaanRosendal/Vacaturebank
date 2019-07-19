@@ -23,15 +23,15 @@ include('header.html');
                 <tr>
                     <th scope="col">GebruikerID</th>
                     <th scope="col">Naam</th>
+                    <th scope="col">Woonplaats</th>
                     <th scope="col">E-mail</th>
-                    <th scope="col"><i class="fas fa-eye"></i></th>
                     <th scope="col"><i class="fas fa-edit"></i></th>
                     <th scope="col"><i class="fas fa-trash-alt"></i></th>
                 </tr>
             </thead>
             <tbody>
                 <?php
-                $sql = "SELECT ID, naam, email
+                $sql = "SELECT ID, naam, email, woonplaats
                         FROM gebruikers
                         ORDER BY naam ASC";
                 $stmt = $verbinding->prepare($sql);
@@ -42,10 +42,10 @@ include('header.html');
                         <tr>
                             <th scope='row'>" . $r["ID"] . "</th>
                             <td>" . $r["naam"] . "</td>
+                            <td>" . $r["woonplaats"] . "</td>
                             <td>" . $r["email"] . "</td>
-                            <td><a href= 'gebruiker.php?id=" . $r["ID"] . "'><i class='far fa-eye'></i></a></td>
                             <td><a href='gbrkrBewerk.php?id=" . $r["ID"] . "'><i class='far fa-edit'></i></a></td>
-                            <td><a onclick='return confirm(\"Weet je zeker dat je deze gebruiker wil verwijderen?\")' class='text-danger' href='gbrkrDelete.php?ID=" . $r["ID"] . "'><i class='far fa-trash-alt'></i></a></td>
+                            <td><a onclick='return confirm(\"Weet je zeker dat je deze gebruiker wil verwijderen?\")' class='text-danger' href='gbrkrDelete.php?id=" . $r["ID"] . "'><i class='far fa-trash-alt'></i></a></td>
                         </tr>
                         ";
                 }

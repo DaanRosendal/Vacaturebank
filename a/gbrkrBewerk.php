@@ -1,0 +1,111 @@
+<?php
+    $page='gebruikers';include('header.html');
+    $id = $_GET["id"];
+    try {
+        $sql = "SELECT * FROM gebruikers WHERE ID = ?";
+        $stmt = $verbinding->prepare($sql);
+        $stmt->execute(array($id));
+        $resultaat = $stmt->fetch(PDO::FETCH_ASSOC);
+    } catch (PDOException $e) {
+        echo $e->getMessage();
+    }
+?>
+<script>
+        function checkFormulier(form) {
+            if (form.postcode.value.length > 7 || form.postcode.value.length < 6) {
+                alert('Uw postcode moet 6 of 7 tekens bevatten.');
+                return false;
+            }
+            if (typeof form.telefoon.value !=='number' && (form.telefoon.value%1)!==0){
+                alert('Uw telefoonnummer mag alleen nummers bevatten.');
+                return false;
+            }
+            if (form.w1.value !== form.w2.value) {
+                alert('De wachtwoorden zijn ongelijk.');
+                return false;
+            }
+            if (form.w1.value.length < 6) {
+                alert('Uw wachtwoord moet minimaal 6 tekens lang zijn.');
+                return false;
+            }
+        return true;
+    	}
+</script>
+<div class="container">
+    <div class="page-header text-center unselectable">
+        <h1 class="unselectable mt-2 display-4">Gebruiker bewerken</h1>
+        <p class="text-secondary">WerknemerID: <?php echo $resultaat["ID"] ?> </p>
+        <hr>
+    </div>
+</div>
+<form name="profielBewerken" method="POST" class="unselectable text-center" enctype="multipart/form-data"
+            onsubmit="return checkFormulier(profielBewerken)">
+    <div class="form-group">
+        <label for="naam">Naam</label>
+        <input required maxlength="45" type="text" name="naam" id="naam" value="<?php echo $resultaat['naam']; ?>"
+            class="form-control col-lg-4 offset-lg-4 col-md-6 offset-md-3 col-sm-8 offset-sm-2 col-8 offset-2 text-center" />
+    </div>
+    <div class="form-group">
+        <label for="straat">Straat en huisnummer</label>
+        <input required maxlength="45" type="text" name="straat" id="straat" value="<?php echo $resultaat['straat']; ?>"
+            class="form-control col-lg-4 offset-lg-4 col-md-6 offset-md-3 col-sm-8 offset-sm-2 col-8 offset-2 text-center" />
+    </div>
+    <div class="form-group">
+        <label for="postcode">Postcode</label>
+        <input required maxlength="45" type="text" name="postcode" value="<?php echo $resultaat['postcode']; ?>"
+            class="form-control col-lg-4 offset-lg-4 col-md-6 offset-md-3 col-sm-8 offset-sm-2 col-8 offset-2 text-center" />
+    </div>
+    <div class="form-group">
+        <label for="woonplaats">Woonplaats</label>
+        <input required maxlength="45" type="text" name="woonplaats" value="<?php echo $resultaat['woonplaats']; ?>"
+            class="form-control col-lg-4 offset-lg-4 col-md-6 offset-md-3 col-sm-8 offset-sm-2 col-8 offset-2 text-center" />
+    </div>
+    <div class="form-group">
+        <label for="telefoon">Telefoonnummer</label>
+        <input required maxlength="20" type="text" name="telefoon" value="<?php echo $resultaat['telefoon']; ?>"
+            class="form-control col-lg-4 offset-lg-4 col-md-6 offset-md-3 col-sm-8 offset-sm-2 col-8 offset-2 text-center" />
+    </div>
+    <div class="form-group">
+        <label for="email">E-mail</label>
+        <input required maxlength="45" type="email" name="email" value="<?php echo $resultaat['email']; ?>"
+            class="form-control col-lg-4 offset-lg-4 col-md-6 offset-md-3 col-sm-8 offset-sm-2 col-8 offset-2 text-center" />
+    </div>
+    <div class="form-group mb-3">
+        <input type="submit" name="submit" value="Bewerk"
+            class="btn btn-primary col-lg-4 offset-lg-0 col-md-6 offset-md-0 col-sm-8 offset-sm-0 col-8 offset-0" />
+    </div>
+</form>
+
+<?php
+    if (isset($_POST["submit"])){
+        $naam = htmlspecialchars($_POST["naam"]);
+        $straat = htmlspecialchars($_POST["straat"]);
+        $postcode = htmlspecialchars($_POST["postcode"]);
+        $woonplaats = htmlspecialchars($_POST["woonplaats"]);
+        $telefoon = htmlspecialchars($_POST["telefoon"]);
+        $email = htmlspecialchars($_POST["email"]);
+        $huidigeEmail = $resultaat["email"];
+
+        $sql = "SELECT COUNT(*) AS aantal FROM gebruikers WHERE email = ?";
+        $stmt = $verbinding->prepare($sql);
+        $stmt->execute(array($email));
+        $r = $stmt->fetch(PDO::FETCH_ASSOC);
+        
+        if ($r["aantal"] != 0 && $huidigeEmail != $email){
+            echo "<script>alert('$email staat al geregistreerd in onze database. Probeer het opnieuw met een ander e-mailadres.');</script>";
+        } else {
+            $sql = "UPDATE gebruikers SET naam = ?, straat = ?, postcode = ?, woonplaats = ?, telefoon = ?, email = ? WHERE email = ?";
+            $stmt = $verbinding->prepare($sql);
+            try {
+                $stmt = $stmt->execute(array($naam, $straat, $postcode, $woonplaats, $telefoon, $email, $huidigeEmail));
+                if ($stmt){
+                    echo "<script>alert('De gegevens van de gebruiker zijn bewerkt'); location.href='gebruikers.php';</script>";
+                } else {
+                    echo "<script>alert('We konden de gegevens van de gebruiker niet bewerken, neem contact op met de website owner als dit vaker gebeurt');</script>";
+                }
+            } catch (PDOException $e) {
+                echo $e->getMessage();
+            }
+        }
+    }
+?>
