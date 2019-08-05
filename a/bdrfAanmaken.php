@@ -1,6 +1,6 @@
 <?php $page = "bedrijven";
 include("header.html"); ?>
- 
+
 <script>
     function checkFormulier(form) {
         if (form.postcode.value.length > 7 || form.postcode.value.length < 6) {
