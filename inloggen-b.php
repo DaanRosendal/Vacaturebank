@@ -13,10 +13,10 @@ session_start(); ?>
     <div class="container text-center">
         <form class="mt" name="inloggen" method="POST" enctype="multipart/form-data" action="">
             <div class="form-group">
-                <input required type="email" class="form-control col-lg-4 offset-lg-4 col-md-6 offset-md-3 col-sm-8 offset-sm-2 col-8 offset-2" name="email" placeholder="test@daanrosendal.com" />
+                <input required type="email" class="form-control col-lg-4 offset-lg-4 col-md-6 offset-md-3 col-sm-8 offset-sm-2 col-8 offset-2" name="email" placeholder="test@daanrosendal.com" value="test@daanrosendal.com" />
             </div>
             <div class="form-group">
-                <input required type="password" class="form-control col-lg-4 offset-lg-4 col-md-6 offset-md-3 col-sm-8 offset-sm-2 col-8 offset-2" name="wachtwoord" placeholder="123123" />
+                <input required type="password" class="form-control col-lg-4 offset-lg-4 col-md-6 offset-md-3 col-sm-8 offset-sm-2 col-8 offset-2" name="wachtwoord" placeholder="123123" value="123123" />
             </div>
             <input type="submit" class="btn btn-primary col-lg-4 offset-lg-0 col-md-6 offset-md-0 col-sm-8 offset-sm-0 col-8 offset-0" name="submit" value="Inloggen" /><br>
         </form>
